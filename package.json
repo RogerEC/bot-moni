@@ -1,0 +1,15 @@
+{
+  "name": "bot-moni",
+  "version": "1.0.0",
+  "description": "Bot Moni UFSC-ARA para Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Roger Eliodoro Condras",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "express": "^4.17.1"
+  }
+}
