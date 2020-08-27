@@ -12,7 +12,17 @@ const Discord = require("discord.js"); //Conexão com a livraria Discord.js
 const client = new Discord.Client(); //Criação de um novo Client
 const config = require("./config.json"); //Pegando o prefixo do bot para respostas de comandos
 
-client.login(process.env.TOKEN); //Ligando o Bot caso ele consiga acessar o token
+client.login("NzQ4NDEwMDY0ODUwNjQ5MTI4.X0dBMA.VQC19Jc3qpmRmhOrbF6sswEPOUs"); //Ligando o Bot caso ele consiga acessar o token
+
+client.on("ready", () => {
+    console.log('pronto');
+})
+
+client.on("message", msg => {
+    if(msg.content === "teste"){
+        msg.reply("O teste funcionou!");
+    }
+})
 
 // Teste inicial
 /*const Discord = require('discord.js');
