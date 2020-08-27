@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv/config');
 const app = express();
 app.get("/", (request, response) => {
   const ping = new Date();
@@ -12,7 +13,7 @@ const Discord = require("discord.js"); //Conexão com a livraria Discord.js
 const client = new Discord.Client(); //Criação de um novo Client
 const config = require("./config.json"); //Pegando o prefixo do bot para respostas de comandos
 
-client.login("NzQ4NDEwMDY0ODUwNjQ5MTI4.X0dBMA.VQC19Jc3qpmRmhOrbF6sswEPOUs"); //Ligando o Bot caso ele consiga acessar o token
+client.login(process.env.TOKEN); //Ligando o Bot caso ele consiga acessar o token
 
 client.on("ready", () => {
     console.log('pronto');
