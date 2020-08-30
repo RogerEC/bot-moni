@@ -20,6 +20,8 @@ client.on("ready", () => {
 })
 
 client.on("message", msg => {
+    console.log(msg.content);
+    console.log(msg.author);
     if(msg.content === "teste"){
         msg.reply("O teste funcionou!");
     }
