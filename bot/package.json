@@ -11,6 +11,11 @@
   "dependencies": {
     "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/RogerEC/bot-moni/.git"
   }
 }
