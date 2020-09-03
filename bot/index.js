@@ -10,24 +10,7 @@ app.get("/", (request, response) => {
 });
 app.listen(process.env.PORT); // Recebe solicitações que o deixa online
 
-const Discord = require("discord.js"); //Conexão com a livraria Discord.js
-const client = new Discord.Client(); //Criação de um novo Client
-const config = require("./config.json"); //Pegando o prefixo do bot para respostas de comandos
-
-client.login(process.env.TOKEN_BOT); //Ligando o Bot caso ele consiga acessar o token
-
-client.on("ready", () => {
-    console.log('pronto');
-})
-
-client.on("message", msg => {
-    console.log(msg.content);
-    console.log(msg.author);
-    if(msg.content === "teste"){
-        msg.reply("O teste funcionou!");
-    }
-})
-
+// Conexão com o banco de dados
 const mysql = require('mysql');
 const conexao = mysql.createConnection({
     host     : process.env.HOST_MYSQL,
@@ -37,26 +20,43 @@ const conexao = mysql.createConnection({
     database : process.env.DATABASE_MYSQL,
 });
 
-conexao.connect(function(err){
-    if(err) return console.log(err);
-    console.log("conectou!");
-});
+const Discord = require("discord.js");
+const config = require("./config.json");
 
-// Teste inicial
-/*const Discord = require('discord.js');
+const client = new Discord.Client();  
 
-const bot = new Discord.Client();
+client.login(process.env.TOKEN_BOT);
 
-const token = '';
-
-bot.login(token);
-
-bot.on("ready", () => {
+client.on("ready", () => {
     console.log('pronto');
 })
 
-bot.on("message", msg => {
-    if(msg.content === "teste"){
-        msg.reply("O teste funcionou!");
-    }
-})*/
+client.on("message", mensagem => {
+    if(mensagem.channel.type == "dm") return;
+    if(mensagem.author.bot) return;
+    if(!mensagem.content.toLocaleLowerCase().startsWith(config.prefix)) return;
+    if(mensagem.content.startsWith(`<@!${client.user.id}>`) || mensagem.content.startsWith(`<@${client.user.id}>`)) return;
+    
+    const argumentos = mensagem.content.toLocaleLowerCase().substring(config.prefix.length).trim().split(/ +/g);
+    if(argumentos[0]=='')
+        argumentos[0]="ajuda";
+    if(eh_disciplina(argumentos[0]))
+        argumentos.unshift("info-geral");
+    mensagem.content.indexOf
+    console.log(argumentos);
+});
+
+function eh_disciplina(codigo="aaa"){
+    if(codigo.length != 7)
+        return false;
+    conexao.connect();
+    conexao.query(`SELECT ID_DISCIPLINA FROM MONI_DISCIPLINA WHERE CODIGO = '${codigo.toUpperCase()}'`, function(error, results, fields){
+        if(error) throw error;/*{
+            conexao.end();
+            console.log('aquiii');
+            return false;
+        }*/
+        console.log(results);
+        conexao.end();
+    });
+}
