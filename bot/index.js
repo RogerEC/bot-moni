@@ -12,12 +12,18 @@ app.listen(process.env.PORT); // Recebe solicitações que o deixa online
 
 // Conexão com o banco de dados
 const mysql = require('mysql');
-const conexao = mysql.createConnection({
+const pool = mysql.createPool({
     host     : process.env.HOST_MYSQL,
     port     : process.env.PORT_MYSQL,
     user     : process.env.USER_MYSQL,
     password : process.env.PASSWORD_MYSQL,
     database : process.env.DATABASE_MYSQL,
+});
+
+pool.getConnection(function(erro, conexao){
+    if(erro) throw erro;
+    console.log("conectou!");
+    conexao.release();
 });
 
 const Discord = require("discord.js");
@@ -49,14 +55,14 @@ client.on("message", mensagem => {
 function eh_disciplina(codigo="aaa"){
     if(codigo.length != 7)
         return false;
-    conexao.connect();
-    conexao.query(`SELECT ID_DISCIPLINA FROM MONI_DISCIPLINA WHERE CODIGO = '${codigo.toUpperCase()}'`, function(error, results, fields){
-        if(error) throw error;/*{
-            conexao.end();
-            console.log('aquiii');
-            return false;
-        }*/
-        console.log(results);
-        conexao.end();
+    pool.getConnection(function(err, conexao){
+        if(err) throw err;
+        conexao.query(`SELECT ID_DISCIPLINA FROM MONI_DISCIPLINA WHERE CODIGO = '${codigo.toUpperCase()}'`, function(error, results){
+            console.log('Resultado: '+results);
+            console.log("Erro1: "+error);
+        }).on('error', function(error){
+            console.log('Erro: '+error);
+        });
+        conexao.release();
     });
 }
